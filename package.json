@@ -6,8 +6,7 @@
     "dev": "tsx watch src/index.ts",
     "start": "node .",
     "build": "tsup src/index.ts --minify",
-    "format": "prettier --write \"**/*.{json,ts}\"",
-    "lint": "eslint . --ext ts --fix"
+    "format": "prettier --write \"**/*.{json,ts}\""
   },
   "dependencies": {
     "discord.js": "^14.14.1",
