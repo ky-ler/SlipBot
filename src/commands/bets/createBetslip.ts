@@ -24,7 +24,7 @@ const createBetslip: ISlashCommand = {
 
     const link = interaction.options.getString("fanduel_link");
 
-    console.log(interaction);
+    console.log(interaction.user.username, interaction.commandName, link);
 
     const fdPrefix =
       "https://account.sportsbook.fanduel.com/sportsbook/addToBetslip?";
