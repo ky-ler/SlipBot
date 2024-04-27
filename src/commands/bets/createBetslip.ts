@@ -22,7 +22,9 @@ const createBetslip: ISlashCommand = {
     const scoresAndOddsPrefix =
       "https://www.scoresandodds.com/nba/parlay?quickslip=1&";
 
-    const link = interaction.options.getString("fanduel_link");
+    // using non-null assertion because the option is required
+    const link = interaction.options.getString("fanduel_link")!;
+
     const username = interaction.user.username;
 
     console.log(
@@ -31,10 +33,7 @@ const createBetslip: ISlashCommand = {
 
     const fdPrefix =
       "https://account.sportsbook.fanduel.com/sportsbook/addToBetslip?";
-    if (
-      !link ||
-      (link && !link.includes(fdPrefix) && !link.includes(scoresAndOddsPrefix))
-    ) {
+    if (!link.includes(fdPrefix) && !link.includes(scoresAndOddsPrefix)) {
       await interaction.reply({
         content: "Please provide a FanDuel link",
         ephemeral: true,
@@ -56,20 +55,18 @@ const createBetslip: ISlashCommand = {
       ephemeral: true,
     });
 
+    // using non-null assertion because the option is required
+    const units = interaction.options.getString("units")!;
+
     // Create embed and send it to the channel where the command was used
     const embed: IEmbed = {
       description: `Place [this bet](${betslipLink}) now on FanDuel.\n\nGood luck! 🍀`,
       timestamp: new Date().toISOString(),
-      fields: [],
-    };
-
-    const units = interaction.options.getString("units");
-    if (units) {
-      embed["fields"] = [
+      fields: [
         { name: "Units", value: units, inline: true },
         { name: "From", value: `<@${interaction.user.id}>`, inline: true },
-      ];
-    }
+      ],
+    };
 
     if (!interaction.guild) return;
     const channel = interaction.guild.channels.cache.get(interaction.channelId);
