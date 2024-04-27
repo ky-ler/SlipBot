@@ -61,7 +61,7 @@ const createBetslip: ISlashCommand = {
       description: `Place [this bet](${betslipLink}) now on FanDuel. Good luck! 🍀`,
       timestamp: new Date().toISOString(),
       fields: [],
-      footer: { text: `From @${username}` },
+      footer: { text: `From <@${interaction.user.id}>` },
     };
 
     const units = interaction.options.getString("units");
