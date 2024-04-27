@@ -19,21 +19,23 @@ const createBetslip: ISlashCommand = {
     ),
 
   execute: async (interaction) => {
+    const username = interaction.user.username;
+
+    // Command options are required, so we can safely use non-null assertion
+    const betLink = interaction.options.getString("fanduel_link")!;
+    const units = interaction.options.getString("units")!;
+
+    console.log(
+      `'${username}' used '${interaction.commandName}' with link: '${betLink}'`
+    );
+
     const scoresAndOddsPrefix =
       "https://www.scoresandodds.com/nba/parlay?quickslip=1&";
 
-    // using non-null assertion because the option is required
-    const link = interaction.options.getString("fanduel_link")!;
-
-    const username = interaction.user.username;
-
-    console.log(
-      `'${username}' used '${interaction.commandName}' with link: '${link}'`
-    );
-
     const fdPrefix =
       "https://account.sportsbook.fanduel.com/sportsbook/addToBetslip?";
-    if (!link.includes(fdPrefix) && !link.includes(scoresAndOddsPrefix)) {
+
+    if (!betLink.includes(fdPrefix) && !betLink.includes(scoresAndOddsPrefix)) {
       await interaction.reply({
         content: "Please provide a FanDuel link",
         ephemeral: true,
@@ -43,11 +45,11 @@ const createBetslip: ISlashCommand = {
 
     let betslipLink = "";
 
-    if (link.includes(fdPrefix)) {
-      const betslipId = link.split(fdPrefix)[1];
+    if (betLink.includes(fdPrefix)) {
+      const betslipId = betLink.split(fdPrefix)[1];
       betslipLink = `${scoresAndOddsPrefix}${betslipId}`;
-    } else if (link.includes(scoresAndOddsPrefix)) {
-      betslipLink = link;
+    } else if (betLink.includes(scoresAndOddsPrefix)) {
+      betslipLink = betLink;
     }
 
     await interaction.reply({
@@ -55,12 +57,9 @@ const createBetslip: ISlashCommand = {
       ephemeral: true,
     });
 
-    // using non-null assertion because the option is required
-    const units = interaction.options.getString("units")!;
-
     // Create embed and send it to the channel where the command was used
     const embed: IEmbed = {
-      description: `Place [this bet](${betslipLink}) now on FanDuel.\n\nGood luck! 🍀\n\n`,
+      description: `Place [this bet](${betslipLink}) now on FanDuel. Good luck! 🍀`,
       timestamp: new Date().toISOString(),
       fields: [
         { name: "Units", value: units, inline: true },
