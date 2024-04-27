@@ -15,17 +15,21 @@ const createBetslip: ISlashCommand = {
       option
         .setName("units")
         .setDescription("The amount of units you want to bet")
-        .setRequired(false)
+        .setRequired(true)
     ),
 
   execute: async (interaction) => {
     const scoresAndOddsPrefix =
       "https://www.scoresandodds.com/nba/parlay?quickslip=1&";
+
     const link = interaction.options.getString("fanduel_link");
 
+    const fdPrefix =
+      "https://account.sportsbook.fanduel.com/sportsbook/addToBetslip?";
     if (
       !link ||
-      (link && !link.includes("fanduel.com/sportsbook/addToBetslip"))
+      (link && !link.includes(fdPrefix)) ||
+      (link && !link.includes(scoresAndOddsPrefix))
     ) {
       await interaction.reply({
         content: "Please provide a FanDuel link",
@@ -34,10 +38,14 @@ const createBetslip: ISlashCommand = {
       return;
     }
 
-    const betslipId = link.split(
-      "https://account.sportsbook.fanduel.com/sportsbook/addToBetslip?"
-    )[1];
-    const betslipLink = `${scoresAndOddsPrefix}${betslipId}`;
+    let betslipLink = "";
+
+    if (link.includes(fdPrefix)) {
+      const betslipId = link.split(fdPrefix)[1];
+      betslipLink = `${scoresAndOddsPrefix}${betslipId}`;
+    } else if (link.includes(scoresAndOddsPrefix)) {
+      betslipLink = link;
+    }
 
     await interaction.reply({
       content: `Created link: ${betslipLink}`,
