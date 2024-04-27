@@ -23,9 +23,10 @@ const createBetslip: ISlashCommand = {
       "https://www.scoresandodds.com/nba/parlay?quickslip=1&";
 
     const link = interaction.options.getString("fanduel_link");
+    const username = interaction.user.username;
 
     console.log(
-      `'${interaction.user.username}' used '${interaction.commandName}' with link: '${link}'`
+      `'${username}' used '${interaction.commandName}' with link: '${link}'`
     );
 
     const fdPrefix =
@@ -60,6 +61,7 @@ const createBetslip: ISlashCommand = {
       description: `Place [this bet](${betslipLink}) now on FanDuel. Good luck! 🍀`,
       timestamp: new Date().toISOString(),
       fields: [],
+      footer: { text: `From @${username}` },
     };
 
     const units = interaction.options.getString("units");
