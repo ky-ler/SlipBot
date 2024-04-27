@@ -28,7 +28,8 @@ const createBetslip: ISlashCommand = {
       "https://account.sportsbook.fanduel.com/sportsbook/addToBetslip?";
     if (
       !link ||
-      (link && (!link.includes(fdPrefix) && !link.includes(scoresAndOddsPrefix))
+      (link && !link.includes(fdPrefix)) ||
+      (link && !link.includes(scoresAndOddsPrefix))
     ) {
       await interaction.reply({
         content: "Please provide a FanDuel link",
