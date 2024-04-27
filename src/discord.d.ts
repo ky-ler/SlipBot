@@ -6,11 +6,6 @@ import {
   Client,
 } from "discord.js";
 
-interface DiscordClient extends Client {
-  commands: Collection<string, any>;
-  msgCommands: Collection<string, any>;
-}
-
 export interface ISlashCommand {
   data:
     | SlashCommandBuilder
