@@ -60,7 +60,7 @@ const createBetslip: ISlashCommand = {
 
     // Create embed and send it to the channel where the command was used
     const embed: IEmbed = {
-      description: `Place [this bet](${betslipLink}) now on FanDuel.\n\nGood luck! 🍀`,
+      description: `Place [this bet](${betslipLink}) now on FanDuel.\n\nGood luck! 🍀\n`,
       timestamp: new Date().toISOString(),
       fields: [
         { name: "Units", value: units, inline: true },
